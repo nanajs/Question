@@ -1,4 +1,55 @@
-### day4:
+### day5:
+
+题目：有n个函数，执行顺序为后面函数依赖上次函数的返回值，用同步和异步模拟执行对应的函数
+
+例如：初始值为1，先加20，后减4，接着\*5，随后\/ 2,求最终的结果(42.5)
+
+同步函数为：
+
+ ```js
+ const add = x => x + 20;
+ const subtraction = x => x - 4;
+ const multiply = x => x * 5;
+ const division = x => x / 2;
+ const pipeFn = (...args) => {
+   return args.reduce((preFn, curFn) => {
+      return (...arg) => {
+         const result = preFn(...arg);
+         return curFn(result);
+      } 
+   });
+  };
+  const reduceFn = pipeFn(add, subtraction, multiply, division);
+  reduceFn(1)
+ ```
+ 
+ 异步函数
+ 
+ ```js
+ const asyncFn = async (x) => {
+  return new Promise(resolve => { // 用promise模拟异步
+     setTimeout(() => {
+       resolve(x);
+     }, Math.random() * 1000); // 使用setTimeout及随机数时间模式后端随机时间后返回数据
+  })
+ }
+ const add = async x => await asyncFn(x + 20);
+ const subtraction = async x => await asyncFn(x - 4);
+ const multiply = async x => await asyncFn(x * 5);
+ const division = async x => await asyncFn(x / 2);
+ const pipeFn = (...args) => {
+   return args.reduce((preFn, curFn) => {
+      return async (...arg) => {
+         const result = await preFn(...arg);
+         return curFn(result);
+      } 
+   });
+  };
+  const reduceFn = pipeFn(add, subtraction, multiply, division);
+  await reduceFn(1)
+ ```
+ 
+ ### day4:
 
  ```js
  let arr = [12,23];
