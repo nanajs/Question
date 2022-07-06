@@ -1,3 +1,36 @@
+
+### day6:
+题目：[1071. 字符串的最大公因子](https://leetcode.cn/problems/greatest-common-divisor-of-strings/)
+
+对于字符串 s 和 t，只有在 s = t + ... + t（t 自身连接 1 次或多次）时，我们才认定 “t 能除尽 s”。
+
+给定两个字符串 str1 和 str2 。返回 最长字符串 x，要求满足 x 能除尽 str1 且 X 能除尽 str2 。
+```
+示例 1：
+输入：str1 = "ABCABC", str2 = "ABC"
+输出："ABC"
+```
+```js
+/**
+ * @param {string} str1
+ * @param {string} str2
+ * @return {string}
+ */
+var gcdOfStrings = function(str1, str2) {
+    if (str1 + str2 !== str2 + str1) {
+        return ''
+    }
+    let len = gcd(str1.length, str2.length)
+    return str1.substring(0, len)
+};
+
+let gcd = (a, b) => (b === 0 ? a : gcd(b, a % b))
+```
+
+解析：如果str1、str2有最大公因子str，那str1就是n个str的拼接，str2就是m个str的拼接，那str1 + str2 === str2 + str1,反之则无解。
+在确定有解的情况下，那就是str1.length 和str2.length的最大公约数就是str.length.
+
+
 ### day5:
 
 题目：有n个函数，执行顺序为后面函数依赖上次函数的返回值，用同步和异步模拟执行对应的函数
