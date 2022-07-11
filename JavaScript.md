@@ -1,3 +1,43 @@
+### day7:
+题目：[409. 最长回文串](https://leetcode.cn/problems/longest-palindrome/)
+
+给定一个包含大写字母和小写字母的字符串 s ，返回 通过这些字母构造成的 最长的回文串 。
+
+在构造过程中，请注意 区分大小写 。比如 "Aa" 不能当做一个回文字符串。
+```
+输入:s = "abccccdd"
+输出:7
+解释:
+我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
+```
+```js
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var longestPalindrome = function(s) {
+    const strMapNum = {};
+    s.split('').forEach(item => {
+        strMapNum[item] = (strMapNum[item] || 0) + 1;
+    });
+    let maxLen = 0;
+    let isCludeOdd = false;
+    Object.values(strMapNum).forEach(item => {
+        if (item % 2 === 0) {
+            maxLen = maxLen + item;
+        } else {
+            maxLen = maxLen + item - 1;
+            isCludeOdd = true;
+        }
+    });
+    return maxLen + (isCludeOdd ? maxOdd : 0);
+};
+```
+
+题解：给定一个map数组，按字符统计，
+1. 如果字符出现次数为偶数，则一定可以构成回文字段
+2. 如果是奇数，则减1为偶数拼接到字符串中去构成回文串
+3. 在结果中如果出现奇数则+1
 
 ### day6:
 题目：[1071. 字符串的最大公因子](https://leetcode.cn/problems/greatest-common-divisor-of-strings/)
