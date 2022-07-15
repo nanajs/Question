@@ -92,3 +92,37 @@ if (res[0] > money) {//当第一个元素大于money目标金额说明买不了�
     }
 }
 
+——————————————————————————————c——————————————————————————————
+#include <stdio.h>
+int main(){
+    char ch;
+    int count=0;                  //遍历指针
+    int M[100]={0};               //存储数组
+    int sum = 0;                  //局部计算和
+    int max_spend = 0;            //最大花费
+
+    do{
+        scanf("%d",&M[count++]);
+    }while((ch=getchar())!= '\n');// 这里用来判断是否输入了回车
+    printf("%d\n",count);
+
+    int R;                        //资金总额
+    scanf("%d",&R);
+                                  //枚举
+    for(int i = 0; i < count; i++)
+        for(int j=i+1; j < count; j++)
+            for(int k=j+1; k < count; k++){
+                sum = M[i]+M[j]+M[k];
+                printf("sum = %d M[%d] + M[%d] + M[%d]\n",sum,i,j,k);//打印枚举结果
+                if(sum <= R){
+                    max_spend = sum > max_spend? sum : max_spend;
+                }
+            }
+    if(max_spend == 0){
+       return -1;
+    }
+    printf("%d",max_spend);
+    return 0;
+
+}
+
