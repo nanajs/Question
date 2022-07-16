@@ -17,9 +17,11 @@ const books = [
   [20, 16],
   [15, 12],
   [10, 10],
-  [9, 8],
+  [8, 5],
+  [9, 5],
   [9, 10]
 ];
+// 对输入的数组按照长度、宽度的大小进行排序
 books.sort((a, b) => {
   if (a[0] !== b[0]) {
     return a[0] - b[0];
@@ -30,15 +32,25 @@ books.sort((a, b) => {
 let dp = [];
 let maxLen = 1;
 for (let i = 0; i < books.length; i++) {
-  let curBook = books[i];
+  // 每一项表示该书底下能叠起来的书的最大值，默认为1，即自己
   dp[i] = 1;
+  // 要新加的书的长度和宽度
+  let curBook = books[i];
   for (let j = i; j < books.length; j++) {
+    // 要比较的书的长度和宽度
     let nexBook = books[j];
     if (curBook[0] < nexBook[0] && curBook[1] < nexBook[1]) {
+      // 新加的书的长宽均大于当前书，说明这本书可以加在当前书的递增序列之后
       dp[i] = dp[i] + 1;
       curBook = books[j];
     }
   }
-  maxLen = Math.max(maxLen, dp[i])
+  //  更新最大值结果
+  maxLen = Math.max(maxLen, dp[i]);
+  // 如果当前叠加是length最大的，则退出循环
+  if (dp[i] >= books.length - i) {
+    break;
+  }
+
 }
 console.log(maxLen)
