@@ -1,0 +1,44 @@
+题目描述
+书籍的长宽都是整数对应，如果书A的长宽度都比B长宽大时，则允许将B排列放在A上面
+现有一组规格的书籍，书籍叠放时要求书籍不能做旋转，请计算最多能有多少个规格书籍能叠放在一起
+
+输入
+[[16,15], [13, 12], [15, 14]]
+
+输出
+3
+
+说明
+这里代表有3本书，第1本长宽分别为16和15，第2本长宽为13和12，第3本长宽为15和14，它们可以按照 [13, 12],[15, 14],[16,15] 的顺序堆叠，所以输出3
+
+【分析】
+————————————————
+const books = [
+  [20, 16],
+  [15, 12],
+  [10, 10],
+  [9, 8],
+  [9, 10]
+];
+books.sort((a, b) => {
+  if (a[0] !== b[0]) {
+    return a[0] - b[0];
+  } else {
+    return a[1] - b[1];
+  }
+});
+let dp = [];
+let maxLen = 1;
+for (let i = 0; i < books.length; i++) {
+  let curBook = books[i];
+  dp[i] = 1;
+  for (let j = i; j < books.length; j++) {
+    let nexBook = books[j];
+    if (curBook[0] < nexBook[0] && curBook[1] < nexBook[1]) {
+      dp[i] = dp[i] + 1;
+      curBook = books[j];
+    }
+  }
+  maxLen = Math.max(maxLen, dp[i])
+}
+console.log(maxLen)
