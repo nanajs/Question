@@ -89,3 +89,32 @@
 说明
 
 无效字符串，存在未按正确顺序闭合的括号。
+
+
+_____________________________________________
+function main(str) {
+      const openArr = ['(', '{', '['];
+      const closeArr = [')', '}', ']'];
+      let maxDepth = 0;
+      let leftArr = [];
+      for (let i = 0; i < str.length; i++) {
+        const item = str[i];
+        if (openArr.includes(item)) {
+          leftArr.push(item);
+          maxDepth = Math.max(leftArr.length, maxDepth);
+        } else if (closeArr.includes(item)) {
+          const popStr = leftArr.pop();
+          if (closeArr.indexOf(item) !== openArr.indexOf(popStr)) {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
+      }
+      return maxDepth
+    }
+    console.log(main('[]'))
+    console.log(main('([]{()})'))
+    console.log(main('(]'))
+    console.log(main('([)]'))
+    console.log(main(')('))
