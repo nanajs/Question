@@ -1,0 +1,53 @@
+ 题目描述
+
+篮球(5V5)比赛中，每个球员拥有一个战斗力，每个队伍的所有球员战斗力之和为该队伍的总体战斗力。
+现有10个球员准备分为两队进行训练赛，教练希望2个队伍的战斗力差值能够尽可能的小，以达到最佳训练效果。
+给出10个球员的战斗力，如果你是教练，你该如何分队，才能达到最佳训练效果?请说出该分队方案下的最小战斗力差值。
+输入描述:
+
+10个篮球队员的战斗力(整数，范围[1,10000]),战斗力之间用空格分隔，如:10987654321
+
+不需要考虑异常输入的场景。
+
+输出描述:
+
+最小的战斗力差值，如:1
+
+示例1  输入输出示例仅供调试，后台判题数据一般不包含示例
+
+输入
+
+10 9 8 7 6 5 4 3 2 1
+
+输出
+
+1
+
+_________________________________________________________________
+function getArr(str) {
+      const strArr = str.split(' ').map(Number);
+      let sum = 0;
+      strArr.forEach(coreItem => {
+        sum = sum + coreItem;
+      });
+      let diffMin;
+      for (let i = 0; i < 6; i++) {
+        for (let j = i + 1; j < 7; j++) {
+          for (let k = j + 1; k < 8; k++) {
+            for (let l = k + 1; l < 9; l++) {
+              for (let m = l + 1; m < 10; m++) {
+                const addSum = strArr[i] + strArr[j] + strArr[k] + strArr[l] + strArr[m];
+                const minDif = Math.abs(sum - 2 * addSum);
+                if (diffMin === undefined) {
+                  diffMin = minDif
+                } else if (diffMin > minDif) {
+                  diffMin = minDif;
+                }
+              }
+            }
+          }
+        }
+      }
+      return diffMin;
+    }
+    console.log(getArr('10 9 8 7 6 5 4 3 2 1'))
