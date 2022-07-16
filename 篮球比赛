@@ -31,18 +31,16 @@ function getArr(str) {
         sum = sum + coreItem;
       });
       let diffMin;
-      for (let i = 0; i < 6; i++) {
-        for (let j = i + 1; j < 7; j++) {
-          for (let k = j + 1; k < 8; k++) {
-            for (let l = k + 1; l < 9; l++) {
-              for (let m = l + 1; m < 10; m++) {
-                const addSum = strArr[i] + strArr[j] + strArr[k] + strArr[l] + strArr[m];
-                const minDif = Math.abs(sum - 2 * addSum);
-                if (diffMin === undefined) {
-                  diffMin = minDif
-                } else if (diffMin > minDif) {
-                  diffMin = minDif;
-                }
+      for (let j = 1; j < 7; j++) {
+        for (let k = j + 1; k < 8; k++) {
+          for (let l = k + 1; l < 9; l++) {
+            for (let m = l + 1; m < 10; m++) {
+              const addSum = strArr[0] + strArr[j] + strArr[k] + strArr[l] + strArr[m];
+              const minDif = Math.abs(sum - 2 * addSum);
+              if (diffMin === undefined) {
+                diffMin = minDif;
+              } else if (diffMin > minDif) {
+                diffMin = minDif;
               }
             }
           }
@@ -50,4 +48,4 @@ function getArr(str) {
       }
       return diffMin;
     }
-    console.log(getArr('10 9 8 7 6 5 4 3 2 1'))
+    console.log(getArr('10 9 8 7 6 5 4 23 6 3'))
