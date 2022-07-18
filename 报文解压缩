@@ -74,7 +74,38 @@ function mains(str) {
       }
     }
 
+——————————————————————————————————————————————————————————————————————
+def decompression(s):
+    stack = []
+    length = len(s)
+    index = length - 1
+    while index >= 0:
+        if not s[index].isdigit():  # 非数字入栈
+            stack.append(s[index])
+            index -= 1
+        else:  # 遇到数字时，解压
+            num = ""
+            res = ""
+            while index >= 0 and s[index].isdigit():
+                num = s[index] + num
+                index -= 1
+            # 说明此时的index处的字符一定时非数字的,此时栈顶一定是左括号
+            while stack[-1] != "]":  # 获取栈中的字母
+                tmp = stack.pop()
+                if tmp != "[":  # 只要字母
+                    res += tmp
+            # 弹出栈顶的元素 # 右括号
+            stack.pop()
+            # 解压
+            res = int(num) * res
+            stack.append(res)
+    stack.reverse()  # 反转字符串
+    print("".join([item for item in stack if item not in "[]"]))
 
+
+# s = "[m2[c2[oi2[jihyb]]]]"
+s = "3[m2[c]]"
+decompression(s)
 
 ___________________________________________________________
 function mains(str) {
