@@ -1,0 +1,145 @@
+题目描述
+
+为了提升数据传输的效率，会对传输的报文进行压缩处理。
+输入一个压缩后的报文，请返回它解压后的原始报文。
+压缩规则：n[str]，表示方括号内部的 str 正好重复 n 次。
+注意 n 为正整数（0 < n <= 100），str只包含小写英文字母，不考虑异常情况。
+输入描述:
+
+输入压缩后的报文：
+
+1）不考虑无效的输入，报文没有额外的空格，方括号总是符合格式要求的；
+
+2）原始报文不包含数字，所有的数字只表示重复的次数 n ，例如不会出现像 5b 或 3[8] 的输入；
+
+输出描述:
+
+解压后的原始报文
+
+注：
+
+1）原始报文长度不会超过1000，不考虑异常的情况
+
+示例 1   输入输出示例仅供调试，后台判题数据一般不包含示例
+
+输入
+
+3[k]2[mn]
+
+输出
+
+kkkmnmn
+
+说明
+
+k 重复3次，mn 重复2次，最终得到 kkkmnmn
+
+示例2  输入输出示例仅供调试，后台判题数据一般不包含示例
+
+输入
+
+3[m2[c]]
+
+输出
+
+mccmccmcc
+
+说明
+
+m2[c] 解压缩后为 mcc，重复三次为 mccmccmcc
+______________________________________________________
+function mains(str) {
+      const firstRigthArr = str.indexOf(']');
+      const leftStr = str.slice(0, firstRigthArr);
+      let lastLeftArr = leftStr.lastIndexOf('[');
+      const midStr = leftStr.slice(lastLeftArr + 1);
+      let num = '';
+      let numStart = leftStr.slice(0, lastLeftArr);
+      for (let i = lastLeftArr - 1; i >= 0; i--) {
+        if (/[0-9]+/.test(numStart[i]) && lastLeftArr - 1 === i) {
+          num += numStart[i];
+          lastLeftArr--;
+        } else
+          break;
+      }
+      let addStr = ''
+      for (let j = 0; j < num; j++) {
+        addStr += midStr;
+      }
+      const result = str.slice(0, lastLeftArr) + addStr + str.slice(firstRigthArr + 1);
+      if (result.indexOf('[') === -1 && result.indexOf(']') === -1) {
+        return result;
+      } else {
+        return mains(result)
+      }
+    }
+
+
+
+___________________________________________________________
+function mains(str) {
+      const strArr = str.split('');
+      const numReg = /[0-9]/;
+      const arrS = []; // 处理后的arrs
+      let leftStr = '';
+      const arrows = [];
+      for (let i = 0; i < strArr.length; i++) {
+        if (['[', ']'].includes(strArr[i])) {
+          if (leftStr) {
+            const numAndStr = leftStr.split(/[0-9]+/);
+            if (!numAndStr[0].length || numAndStr[0].length === leftStr.length) {
+              arrS.push(leftStr);
+              leftStr = '';
+            } else {
+              arrS.push(numAndStr[0], leftStr.slice(numAndStr[0].length));
+              leftStr = '';
+            }
+          }
+          arrS.push(strArr[i]);
+          if (strArr[i] === '[') {
+            length = length + 1;
+            arrows.push('[');
+          } else if (strArr[i] === ']') {
+            const popArrow = arrows.pop();
+            if (popArrow !== '[') {
+              break;
+              return false;
+            }
+          }
+        } else {
+          leftStr = leftStr ? leftStr + strArr[i] : strArr[i];
+        }
+      }
+      if (arrows.length) {
+        return false;
+      } else {
+        return arrS;
+      }
+    }
+
+    function actionS(arrs) {
+      let index = 0;
+      for (let i = 0; i < arrs.length; i++) {
+        if (arrs[i] === ']') {
+          if (arrs[i - 2] === '[') {
+            let str = '';
+            for (let j = 0; j < arrs[i - 3]; j++) {
+              str = str + arrs[i - 1];
+            }
+            arrs.splice(i - 3, 4, str);
+            return actionS(arrs);
+          } else if (/[a-z]+/.test(arrs[i - 2])) {
+            arrs.splice(i - 2, 2, arrs[i - 2] + arrs[i - 1]);
+            return actionS(arrs);
+          }
+        } else if (/[a-z]+/.test(arrs[i])) {
+          index += 1;
+        }
+      }
+      if (arrs.length === index) {
+        return arrs.join('');
+      }
+    }
+
+    console.log(actionS(mains('3[k]2[mn]')) === 'kkkmnmn')
+    console.log(actionS(mains('3[m2[c]]')) === 'mccmccmcc')
